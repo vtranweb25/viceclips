@@ -1,0 +1,30 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>ViceClips TikTok sign-in</title>
+<style>
+  body { font-family: system-ui, sans-serif; max-width: 640px; margin: 48px auto; padding: 0 16px; line-height: 1.6; color: #1a1a1a; background: #fff; }
+  code { background: #f2f2f2; padding: 2px 6px; border-radius: 4px; word-break: break-all; }
+</style>
+</head>
+<body>
+<h1>Finishing TikTok sign-in…</h1>
+<p id="msg">Handing the sign-in back to the ViceClips tool on this computer.</p>
+<script>
+  // TikTok sends the user here (an https page) after sign-in. This page only forwards the
+  // one-time code to the ViceClips tool listening on this same computer (127.0.0.1); the code
+  // never goes anywhere else. If the tool isn't running, it shows a message instead.
+  var q = window.location.search;
+  var p = new URLSearchParams(q);
+  if (p.get("code")) {
+    window.location.replace("http://127.0.0.1:8765/tiktok/callback" + q);
+  } else {
+    document.getElementById("msg").textContent =
+      "TikTok did not return a sign-in code" + (p.get("error") ? " (" + p.get("error") + ")" : "") +
+      ". Close this tab and start the sign-in again from the ViceClips tool.";
+  }
+</script>
+</body>
+</html>
